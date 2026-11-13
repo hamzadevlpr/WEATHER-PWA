@@ -24,7 +24,9 @@ export function isStorageAvailable(): boolean {
 export function getItem(key: string): string | null {
   if (checkStorageAvailable()) {
     try {
-      return localStorage.getItem(key);
+      const val = localStorage.getItem(key);
+      if (val !== null) return val;
+      return memoryStore.get(key) ?? null;
     } catch {
       return memoryStore.get(key) ?? null;
     }

@@ -29,12 +29,7 @@ export async function fetchWeather(
       error.kind === 'validation';
 
     if (shouldFallback) {
-      try {
-        return await fetchOpenMeteoWeather(city, signal);
-      } catch (fallbackError) {
-        // If fallback also fails, throw the fallback error
-        throw fallbackError;
-      }
+      return await fetchOpenMeteoWeather(city, signal);
     }
 
     throw error;
