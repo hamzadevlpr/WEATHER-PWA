@@ -359,6 +359,7 @@ function WeatherDashboard() {
         reminderSettings={reminder.settings}
         onReminderUpdate={reminder.updateSettings}
         permissionState={reminder.permissionState}
+        onPermissionRefresh={reminder.refreshPermission}
         isPeriodicSyncAvailable={reminder.isPeriodicSyncAvailable}
         canUseReminders={reminder.canUseReminders}
         limitationMessage={reminder.limitationMessage}

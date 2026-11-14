@@ -14,6 +14,7 @@ interface SettingsDialogProps {
   reminderSettings: ReminderSettings;
   onReminderUpdate: (partial: Partial<ReminderSettings>) => void;
   permissionState: NotificationPermission | 'unsupported';
+  onPermissionRefresh?: () => void;
   isPeriodicSyncAvailable: boolean;
   canUseReminders: boolean;
   limitationMessage: string | null;
@@ -32,6 +33,7 @@ export function SettingsDialog({
   reminderSettings,
   onReminderUpdate,
   permissionState,
+  onPermissionRefresh,
   isPeriodicSyncAvailable,
   canUseReminders,
   limitationMessage,
@@ -78,6 +80,7 @@ export function SettingsDialog({
               settings={reminderSettings}
               onUpdate={onReminderUpdate}
               permissionState={permissionState}
+              onPermissionRefresh={onPermissionRefresh}
               isPeriodicSyncAvailable={isPeriodicSyncAvailable}
               canUseReminders={canUseReminders}
               limitationMessage={limitationMessage}

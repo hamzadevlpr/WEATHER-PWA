@@ -10,6 +10,7 @@ interface ReminderSettingsComponentProps {
   settings: ReminderSettings;
   onUpdate: (partial: Partial<ReminderSettings>) => void;
   permissionState: NotificationPermission | 'unsupported';
+  onPermissionRefresh?: () => void;
   isPeriodicSyncAvailable: boolean;
   canUseReminders: boolean;
   limitationMessage: string | null;
@@ -22,6 +23,7 @@ export function ReminderSettingsComponent({
   settings,
   onUpdate,
   permissionState,
+  onPermissionRefresh,
   isPeriodicSyncAvailable: _isPeriodicSyncAvailable,
   canUseReminders,
   limitationMessage,
@@ -51,6 +53,7 @@ export function ReminderSettingsComponent({
 
   const handlePermissionGranted = async () => {
     const res = await requestNotificationPermission();
+    onPermissionRefresh?.();
     if (res === 'granted') {
       onUpdate({ enabled: true });
     }

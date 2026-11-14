@@ -84,9 +84,9 @@ export function FavouritesPanel({
         </div>
       ) : (
         <div className="flex flex-row md:flex-col gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
-          {favourites.map((fav) => (
+          {favourites.map((fav, index) => (
             <FavouriteItemWithWeather
-              key={fav.id}
+              key={fav.id || `${fav.name}-${fav.latitude}-${fav.longitude}-${index}`}
               city={fav}
               isSelected={selectedCityId === fav.id}
               onClick={() => onSelect(fav)}

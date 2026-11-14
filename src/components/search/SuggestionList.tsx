@@ -39,11 +39,12 @@ export const SuggestionList = forwardRef<HTMLUListElement, SuggestionListProps>(
         >
           {items.map((city, index) => {
             const isActive = index === activeIndex;
-            const optionId = `${listboxId}-option-${city.id}`;
+            const uniqueKey = city.id || `${city.name}-${city.latitude}-${city.longitude}-${index}`;
+            const optionId = `${listboxId}-option-${uniqueKey}`;
 
             return (
               <li
-                key={city.id}
+                key={uniqueKey}
                 id={optionId}
                 role="option"
                 aria-selected={isActive}

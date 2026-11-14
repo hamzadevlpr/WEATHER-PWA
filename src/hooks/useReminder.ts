@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import type { ReminderSettings } from '../types';
 import { useLocalStorage } from './useLocalStorage';
 import { STORAGE_KEYS } from '../services/storage';
@@ -12,6 +12,7 @@ interface UseReminderReturn {
   settings: ReminderSettings;
   updateSettings: (partial: Partial<ReminderSettings>) => void;
   permissionState: NotificationPermission | 'unsupported';
+  refreshPermission: () => void;
   isPeriodicSyncAvailable: boolean;
   canUseReminders: boolean;
   limitationMessage: string | null;
@@ -31,7 +32,22 @@ export function useReminder(): UseReminderReturn {
     [setSettings],
   );
 
-  const permissionState = useMemo(() => getNotificationPermission(), []);
+  const [permissionState, setPermissionState] = useState<
+    NotificationPermission | 'unsupported'
+  >(getNotificationPermission);
+
+  const refreshPermission = useCallback(() => {
+    setPermissionState(getNotificationPermission());
+  }, []);
+
+  useEffect(() => {
+    refreshPermission();
+    window.addEventListener('focus', refreshPermission);
+    return () => {
+      window.removeEventListener('focus', refreshPermission);
+    };
+  }, [refreshPermission]);
+
   const isPeriodicSyncAvailable = useMemo(() => isPeriodicSyncSupported(), []);
 
   const canUseReminders = useMemo(
@@ -56,6 +72,7 @@ export function useReminder(): UseReminderReturn {
     settings,
     updateSettings,
     permissionState,
+    refreshPermission,
     isPeriodicSyncAvailable,
     canUseReminders,
     limitationMessage,

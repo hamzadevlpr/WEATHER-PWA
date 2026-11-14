@@ -25,9 +25,9 @@ export function ForecastList({ daily, unit }: ForecastListProps) {
         {daily.length}-Day Forecast
       </h2>
       <div className="space-y-2">
-        {daily.map((day) => (
+        {daily.map((day, index) => (
           <ForecastDay
-            key={day.date}
+            key={day.date || `day-${index}`}
             day={day}
             unit={unit}
             globalMin={globalMin}
