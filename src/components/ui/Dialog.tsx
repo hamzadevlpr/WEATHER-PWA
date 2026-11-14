@@ -15,7 +15,7 @@ const DialogOverlay = forwardRef<
   <DialogPrimitive.Overlay ref={ref} asChild {...props}>
     <motion.div
       className={cn(
-        'fixed inset-0 z-50 bg-[var(--color-overlay)] backdrop-blur-sm',
+        'fixed inset-0 z-50 bg-[var(--color-overlay)]',
         className,
       )}
       initial={{ opacity: 0 }}
@@ -53,7 +53,7 @@ const DialogContent = forwardRef<
             'relative w-full max-w-[480px]',
             'rounded-xl border border-[var(--color-border)]',
             'bg-[var(--color-surface)] text-[var(--color-text-primary)]',
-            'shadow-xl',
+            'shadow-sm',
             'p-6',
             'focus:outline-none',
             className,

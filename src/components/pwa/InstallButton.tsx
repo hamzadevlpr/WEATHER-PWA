@@ -17,7 +17,7 @@ export function InstallButton({ canInstall, isInstalled, isIOS, onInstall }: Ins
         variant="secondary"
         size="sm"
         onClick={onInstall}
-        className="h-8 gap-1.5 px-2.5 text-xs font-medium text-sky-600 dark:text-sky-400 bg-sky-500/10 hover:bg-sky-500/20 border-transparent"
+        className="h-8 gap-1.5 px-2.5 text-xs font-medium"
         aria-label="Install WeatherBoard PWA"
       >
         <Download className="h-3.5 w-3.5" />

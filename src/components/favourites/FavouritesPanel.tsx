@@ -73,7 +73,7 @@ export function FavouritesPanel({
       </div>
 
       {favourites.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-[var(--color-border)] p-6 text-center">
+        <div className="flex flex-col items-center justify-center py-6 text-center">
           <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-surface-secondary)] text-[var(--color-text-tertiary)]">
             <Sparkles className="h-4 w-4" />
           </div>

@@ -2,8 +2,12 @@ import { useState } from 'react';
 import { Switch } from '@/components/ui/Switch';
 import { Button } from '@/components/ui/Button';
 import { PermissionExplainer } from './PermissionExplainer';
-import { requestNotificationPermission, showTestNotification } from '@/services/notifications';
-import { Info, AlertTriangle, Send } from 'lucide-react';
+import {
+  requestNotificationPermission,
+  showTestNotification,
+  type TestNotificationResult,
+} from '@/services/notifications';
+import { Info, AlertTriangle, Send, CheckCircle2, HelpCircle } from 'lucide-react';
 import type { ReminderSettings } from '@/types';
 
 interface ReminderSettingsComponentProps {
@@ -33,7 +37,8 @@ export function ReminderSettingsComponent({
 }: ReminderSettingsComponentProps) {
   const [showExplainer, setShowExplainer] = useState(false);
   const [testSending, setTestSending] = useState(false);
-  const [testSuccess, setTestSuccess] = useState<boolean | null>(null);
+  const [testFeedback, setTestFeedback] = useState<TestNotificationResult | null>(null);
+  const [showTroubleshooting, setShowTroubleshooting] = useState(false);
 
   const handleToggle = async (enabled: boolean) => {
     if (!enabled) {
@@ -61,11 +66,35 @@ export function ReminderSettingsComponent({
 
   const handleSendTest = async () => {
     setTestSending(true);
-    setTestSuccess(null);
+    setTestFeedback(null);
     try {
-      const ok = await showTestNotification(activeCityName, activeCityTemp, activeCityCondition);
-      setTestSuccess(ok);
-      setTimeout(() => setTestSuccess(null), 3000);
+      // If permission is default, requesting permission directly from the click handler preserves the user gesture
+      if (permissionState === 'default') {
+        const res = await requestNotificationPermission();
+        onPermissionRefresh?.();
+        if (res !== 'granted') {
+          setTestFeedback({
+            success: false,
+            error: 'permission_not_granted',
+            message:
+              res === 'denied'
+                ? 'Notifications were blocked. Please enable them in your browser site settings.'
+                : 'Notification prompt was closed. Please allow permissions to test.',
+          });
+          return;
+        }
+      }
+
+      const result = await showTestNotification(
+        activeCityName,
+        activeCityTemp,
+        activeCityCondition,
+      );
+      onPermissionRefresh?.();
+      setTestFeedback(result);
+      if (result.success) {
+        setTimeout(() => setTestFeedback(null), 4000);
+      }
     } finally {
       setTestSending(false);
     }
@@ -90,22 +119,44 @@ export function ReminderSettingsComponent({
         />
       </div>
 
+      {/* Permission: Not granted hint */}
+      {permissionState === 'default' && (
+        <div className="flex items-center justify-between gap-2 pt-2 text-xs text-[var(--color-text-secondary)]">
+          <div className="flex items-center gap-2">
+            <Info className="h-4 w-4 shrink-0 text-primary-500" />
+            <p>Notification permission required for daily weather alerts.</p>
+          </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setShowExplainer(true)}
+            className="h-6 text-[11px] shrink-0"
+          >
+            Allow
+          </Button>
+        </div>
+      )}
+
       {limitationMessage && (
-        <div className="flex items-start gap-2 rounded-xl bg-amber-500/10 p-3 text-xs text-amber-600 dark:text-amber-400 border border-amber-500/20">
-          <Info className="h-4 w-4 shrink-0 mt-0.5" />
+        <div className="flex items-start gap-2 pt-2 text-xs text-[var(--color-text-secondary)]">
+          <Info className="h-4 w-4 shrink-0 mt-0.5 text-warning-500" />
           <p>{limitationMessage}</p>
         </div>
       )}
 
       {permissionState === 'denied' && (
-        <div className="flex items-start gap-2 rounded-xl bg-rose-500/10 p-3 text-xs text-rose-600 dark:text-rose-400 border border-rose-500/20">
+        <div className="flex items-start gap-2 pt-2 text-xs text-error-500">
           <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
-          <p>
-            Notifications are currently blocked. To enable, click the lock or settings icon in your browser URL bar and allow notifications for this site.
-          </p>
+          <div className="space-y-0.5">
+            <p className="font-medium">Notifications are blocked in your browser.</p>
+            <p className="text-[11px] text-[var(--color-text-tertiary)]">
+              Click the site settings/lock icon in your address bar and change Notifications to "Allow", then reload.
+            </p>
+          </div>
         </div>
       )}
 
+      {/* Settings section when enabled */}
       {settings.enabled && canUseReminders && (
         <div className="space-y-4 pt-2 border-t border-[var(--color-border)]">
           <div className="flex items-center justify-between">
@@ -135,12 +186,57 @@ export function ReminderSettingsComponent({
             </Button>
           </div>
 
-          {testSuccess === true && (
-            <p className="text-xs text-emerald-500 text-right">Test notification delivered!</p>
+          {/* Test Feedback Messages */}
+          {testFeedback?.success && (
+            <div className="flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 justify-end">
+              <CheckCircle2 className="h-3.5 w-3.5" />
+              <span>Test notification dispatched! Check your notifications.</span>
+            </div>
           )}
-          {testSuccess === false && (
-            <p className="text-xs text-rose-500 text-right">Could not show notification. Check permissions.</p>
+
+          {testFeedback && !testFeedback.success && (
+            <div className="rounded-lg bg-rose-500/10 p-2.5 text-xs text-rose-600 dark:text-rose-400 border border-rose-500/20 space-y-1">
+              <div className="flex items-center gap-1.5 font-medium">
+                <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+                <span>Notification could not be displayed</span>
+              </div>
+              <p className="text-[11px] pl-5 opacity-90">{testFeedback.message}</p>
+            </div>
           )}
+
+          {/* Troubleshooting hints toggle */}
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={() => setShowTroubleshooting((prev) => !prev)}
+              className="flex items-center gap-1 text-[11px] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors"
+            >
+              <HelpCircle className="h-3 w-3" />
+              <span>Notification not appearing? Troubleshooting tips</span>
+            </button>
+
+            {showTroubleshooting && (
+              <div className="mt-2 rounded-xl bg-[var(--color-surface-secondary)] p-3 text-[11px] text-[var(--color-text-secondary)] space-y-2 border border-[var(--color-border)]">
+                <p className="font-semibold text-[var(--color-text-primary)]">Why notifications may not show:</p>
+                <ul className="list-disc list-inside space-y-1 text-[var(--color-text-tertiary)]">
+                  <li>
+                    <strong className="text-[var(--color-text-secondary)]">Windows:</strong> Check that{' '}
+                    <em>Focus Assist / Do Not Disturb</em> is off and notifications from your browser are enabled in{' '}
+                    <em>Windows Settings → System → Notifications</em>.
+                  </li>
+                  <li>
+                    <strong className="text-[var(--color-text-secondary)]">macOS:</strong> Ensure <em>Focus mode / Do Not Disturb</em> is disabled, and your browser has notification permissions in <em>System Settings → Notifications</em>.
+                  </li>
+                  <li>
+                    <strong className="text-[var(--color-text-secondary)]">Browser settings:</strong> Ensure notifications are set to "Allow" in site permissions (lock icon in address bar).
+                  </li>
+                  <li>
+                    <strong className="text-[var(--color-text-secondary)]">Development mode:</strong> If testing locally, test notifications require an active Service Worker or HTTPS/localhost context.
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       )}
 

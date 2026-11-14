@@ -49,7 +49,7 @@ function SunIcon({ colors, size }: { colors: IconPalette; size: number }) {
   const rayDist = size * 0.3;
 
   return (
-    <g className="origin-center animate-[spin-slow_20s_linear_infinite] motion-reduce:animate-none">
+    <g className="origin-center">
       {/* Rays */}
       {Array.from({ length: 8 }, (_, i) => {
         const angle = (i * 45 * Math.PI) / 180;
@@ -86,9 +86,9 @@ function MoonIcon({ colors, size }: { colors: IconPalette; size: number }) {
       <circle cx={cx} cy={cy} r={r} fill={colors.sun} />
       <circle cx={cx + r * 0.45} cy={cy - r * 0.4} r={r * 0.75} fill="currentColor" className="text-[var(--color-surface)]" />
       {/* Stars */}
-      <circle cx={size * 0.75} cy={size * 0.2} r={1.5} fill={colors.sunRay} className="animate-[pulse-glow_3s_ease-in-out_infinite] motion-reduce:animate-none" />
-      <circle cx={size * 0.85} cy={size * 0.4} r={1} fill={colors.sunRay} className="animate-[pulse-glow_3s_ease-in-out_infinite_0.5s] motion-reduce:animate-none" />
-      <circle cx={size * 0.65} cy={size * 0.55} r={1.2} fill={colors.sunRay} className="animate-[pulse-glow_3s_ease-in-out_infinite_1s] motion-reduce:animate-none" />
+      <circle cx={size * 0.75} cy={size * 0.2} r={1.5} fill={colors.sunRay} opacity={0.8} />
+      <circle cx={size * 0.85} cy={size * 0.4} r={1} fill={colors.sunRay} opacity={0.6} />
+      <circle cx={size * 0.65} cy={size * 0.55} r={1.2} fill={colors.sunRay} opacity={0.7} />
     </g>
   );
 }
@@ -118,7 +118,6 @@ function CloudShape({
 function RainDrops({ size, colors, count }: { size: number; colors: IconPalette; count: number }) {
   const drops = Array.from({ length: count }, (_, i) => ({
     x: size * 0.3 + (i * size * 0.4) / (count - 1 || 1),
-    delay: `${i * 0.3}s`,
   }));
   return (
     <g>
@@ -132,8 +131,6 @@ function RainDrops({ size, colors, count }: { size: number; colors: IconPalette;
           stroke={colors.rain}
           strokeWidth={2}
           strokeLinecap="round"
-          className="animate-[fall_1s_ease-in_infinite] motion-reduce:animate-none"
-          style={{ animationDelay: drop.delay }}
         />
       ))}
     </g>
@@ -142,9 +139,9 @@ function RainDrops({ size, colors, count }: { size: number; colors: IconPalette;
 
 function SnowFlakes({ size, colors }: { size: number; colors: IconPalette }) {
   const flakes = [
-    { x: size * 0.3, delay: '0s' },
-    { x: size * 0.5, delay: '0.4s' },
-    { x: size * 0.7, delay: '0.8s' },
+    { x: size * 0.3 },
+    { x: size * 0.5 },
+    { x: size * 0.7 },
   ];
   return (
     <g>
@@ -155,8 +152,6 @@ function SnowFlakes({ size, colors }: { size: number; colors: IconPalette }) {
           cy={size * 0.7}
           r={2.5}
           fill={colors.snow}
-          className="animate-[fall_1.5s_ease-in_infinite] motion-reduce:animate-none"
-          style={{ animationDelay: f.delay }}
         />
       ))}
     </g>
@@ -168,7 +163,6 @@ function LightningBolt({ size, colors }: { size: number; colors: IconPalette }) 
     <path
       d={`M${size * 0.48},${size * 0.55} L${size * 0.42},${size * 0.72} L${size * 0.5},${size * 0.72} L${size * 0.45},${size * 0.88} L${size * 0.58},${size * 0.65} L${size * 0.5},${size * 0.65} L${size * 0.55},${size * 0.55} Z`}
       fill={colors.lightning}
-      className="animate-[flash_3s_ease-in-out_infinite] motion-reduce:animate-none"
     />
   );
 }
@@ -188,8 +182,6 @@ function FogLines({ size, colors }: { size: number; colors: IconPalette }) {
           strokeWidth={3}
           strokeLinecap="round"
           opacity={0.5 + i * 0.1}
-          className="animate-[drift_4s_ease-in-out_infinite] motion-reduce:animate-none"
-          style={{ animationDelay: `${i * 0.5}s` }}
         />
       ))}
     </g>
@@ -224,9 +216,7 @@ function getWeatherSvg(
               <MoonIcon colors={colors} size={size} />
             </g>
           )}
-          <g className="animate-[drift_6s_ease-in-out_infinite] motion-reduce:animate-none">
-            <CloudShape cx={mid + size * 0.08} cy={mid + size * 0.1} scale={0.7} fill={colors.cloud} />
-          </g>
+          <CloudShape cx={mid + size * 0.08} cy={mid + size * 0.1} scale={0.7} fill={colors.cloud} />
         </g>
       );
 
@@ -234,9 +224,7 @@ function getWeatherSvg(
       return (
         <g>
           <CloudShape cx={mid - 4} cy={mid - 4} scale={0.6} fill={colors.cloud} />
-          <g className="animate-[drift_5s_ease-in-out_infinite] motion-reduce:animate-none">
-            <CloudShape cx={mid + 4} cy={mid + 4} scale={0.75} fill={colors.cloudDark} />
-          </g>
+          <CloudShape cx={mid + 4} cy={mid + 4} scale={0.75} fill={colors.cloudDark} />
         </g>
       );
 
@@ -252,9 +240,7 @@ function getWeatherSvg(
     case 'drizzle':
       return (
         <g>
-          <g className="animate-[drift_5s_ease-in-out_infinite] motion-reduce:animate-none">
-            <CloudShape cx={mid} cy={mid - 4} scale={0.7} fill={colors.cloud} />
-          </g>
+          <CloudShape cx={mid} cy={mid - 4} scale={0.7} fill={colors.cloud} />
           <RainDrops size={size} colors={colors} count={2} />
         </g>
       );

@@ -61,10 +61,10 @@ export const FavouriteChip: React.FC<FavouriteChipProps> = ({
         }
       }}
       className={cn(
-        'group relative flex min-h-[44px] cursor-pointer items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 transition-all outline-none',
+        'group relative flex min-h-[44px] cursor-pointer items-center justify-between gap-3 rounded-sm px-3 py-2 transition-all outline-none',
         'border border-[var(--color-border)]',
         isSelected
-          ? 'bg-primary-500/10 border-primary-500/40 text-primary-500'
+          ? 'bg-primary-500/10 border-primary-500 text-primary-500'
           : 'bg-[var(--color-surface)] text-[var(--color-text-primary)] hover:border-[var(--color-border-secondary)] hover:bg-[var(--color-surface-secondary)]',
         'focus-visible:ring-2 focus-visible:ring-primary-500/40',
         className,
@@ -102,7 +102,7 @@ export const FavouriteChip: React.FC<FavouriteChipProps> = ({
             onRemove(e);
           }}
           className={cn(
-            'flex h-7 w-7 items-center justify-center rounded-lg text-[var(--color-text-tertiary)]',
+            'flex h-6 w-6 items-center justify-center rounded-xs text-[var(--color-text-tertiary)]',
             'transition-colors hover:bg-[var(--color-surface-tertiary)] hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40',
           )}
           aria-label={`Remove ${city.name} from favourites`}

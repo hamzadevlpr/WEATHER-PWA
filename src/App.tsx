@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   RotateCcw,
   Sparkles,
+  Navigation,
 } from 'lucide-react';
 
 import { useTheme, useThemeProvider, ThemeContext } from '@/hooks/useTheme';
@@ -15,8 +16,10 @@ import { useWeather } from '@/hooks/useWeather';
 import { useCitySearch } from '@/hooks/useCitySearch';
 import { useFavourites } from '@/hooks/useFavourites';
 import { useReminder } from '@/hooks/useReminder';
+import { useGeolocation } from '@/hooks/useGeolocation';
 import { useOnlineStatus } from '@/hooks/useOnlineStatus';
 import { useInstallPrompt } from '@/hooks/useInstallPrompt';
+import { STORAGE_KEYS } from '@/services/storage';
 import { CitySearch } from '@/components/search/CitySearch';
 import { CurrentConditions } from '@/components/weather/CurrentConditions';
 import { ForecastList } from '@/components/weather/ForecastList';
@@ -72,23 +75,53 @@ function WeatherDashboard() {
   const citySearch = useCitySearch();
   const { favourites, addFavourite, removeFavourite, isFavourite, canAddMore } = useFavourites();
   const reminder = useReminder();
+  const geolocation = useGeolocation();
 
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [swNeedsUpdate, setSwNeedsUpdate] = useState(false);
 
-  // Default selection if nothing selected yet: fallback to first favourite or London
+  // Default selection on load: prioritize user device location
   useEffect(() => {
-    if (!selectedCity) {
-      if (favourites.length > 0 && favourites[0]) {
-        setSelectedCity(favourites[0]);
-      } else {
-        const defaultCity = DEFAULT_POPULAR_CITIES[0];
-        if (defaultCity) {
-          setSelectedCity(defaultCity);
-        }
-      }
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('city') || params.get('lat')) {
+      return;
     }
-  }, [selectedCity, favourites, setSelectedCity]);
+
+    const isManual = localStorage.getItem(STORAGE_KEYS.isManualCity);
+    const isOldDefault = selectedCity?.id === 'london' && isManual !== 'true';
+
+    if (!selectedCity || isManual !== 'true' || isOldDefault) {
+      geolocation
+        .requestDeviceLocation()
+        .then((deviceCity) => {
+          if (deviceCity) {
+            setSelectedCity(deviceCity);
+          } else if (!selectedCity) {
+            if (favourites.length > 0 && favourites[0]) {
+              setSelectedCity(favourites[0]);
+            } else {
+              const defaultCity = DEFAULT_POPULAR_CITIES[0];
+              if (defaultCity) {
+                setSelectedCity(defaultCity);
+              }
+            }
+          }
+        })
+        .catch(() => {
+          if (!selectedCity) {
+            if (favourites.length > 0 && favourites[0]) {
+              setSelectedCity(favourites[0]);
+            } else {
+              const defaultCity = DEFAULT_POPULAR_CITIES[0];
+              if (defaultCity) {
+                setSelectedCity(defaultCity);
+              }
+            }
+          }
+        });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Periodic reminder background check when tab is visible
   useEffect(() => {
@@ -122,9 +155,23 @@ function WeatherDashboard() {
   }, [reminder.settings, weatherData]);
 
   const handleCitySelect = (city: CityResult) => {
+    localStorage.setItem(STORAGE_KEYS.isManualCity, 'true');
     setSelectedCity(city);
     citySearch.addToRecentSearches(city);
   };
+
+  const handleUseCurrentLocation = async () => {
+    const deviceCity = await geolocation.requestDeviceLocation();
+    if (deviceCity) {
+      localStorage.removeItem(STORAGE_KEYS.isManualCity);
+      setSelectedCity(deviceCity);
+      citySearch.addToRecentSearches(deviceCity);
+    }
+  };
+
+  const isDeviceLocation =
+    selectedCity?.id.startsWith('geo-') ||
+    localStorage.getItem(STORAGE_KEYS.isManualCity) !== 'true';
 
   const isCurrentFav = selectedCity ? isFavourite(selectedCity.id) : false;
 
@@ -165,10 +212,10 @@ function WeatherDashboard() {
       />
 
       {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-md px-4 py-3 sm:px-6">
+      <header className="sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 sm:px-6">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-500/10 text-sky-500">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-surface-secondary)] text-primary-500">
               <CloudSun className="h-5 w-5" />
             </div>
             <div>
@@ -192,6 +239,8 @@ function WeatherDashboard() {
               clearRecentSearches={citySearch.clearRecentSearches}
               retry={citySearch.retry}
               onCitySelect={handleCitySelect}
+              onUseCurrentLocation={handleUseCurrentLocation}
+              isLocating={geolocation.isLoading}
               disabled={!isOnline}
             />
           </div>
@@ -233,7 +282,7 @@ function WeatherDashboard() {
             {/* Quick Suggestions for first-time explore */}
             <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 shadow-sm">
               <div className="flex items-center gap-2 mb-2 text-xs font-semibold text-[var(--color-text-secondary)]">
-                <Sparkles className="h-3.5 w-3.5 text-sky-500" />
+                <Sparkles className="h-3.5 w-3.5 text-primary-500" />
                 <span>Popular Cities</span>
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -242,7 +291,7 @@ function WeatherDashboard() {
                     key={c.id}
                     type="button"
                     onClick={() => handleCitySelect(c)}
-                    className="rounded-lg bg-[var(--color-surface-secondary)] px-2 py-1 text-xs text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-tertiary)] hover:text-[var(--color-text-primary)] transition-colors"
+                    className="rounded-sm bg-[var(--color-surface-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-tertiary)] hover:text-[var(--color-text-primary)] transition-colors border border-[var(--color-border)]"
                   >
                     {c.name}
                   </button>
@@ -257,9 +306,17 @@ function WeatherDashboard() {
             {selectedCity && (
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
-                    {selectedCity.name}
-                  </h2>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
+                      {selectedCity.name}
+                    </h2>
+                    {isDeviceLocation && (
+                      <Navigation
+                        className="h-3.5 w-3.5 text-[var(--color-text-tertiary)]"
+                        aria-label="Current device location"
+                      />
+                    )}
+                  </div>
                   <p className="text-xs text-[var(--color-text-tertiary)]">
                     {[selectedCity.region, selectedCity.country].filter(Boolean).join(', ')}
                   </p>
@@ -284,7 +341,7 @@ function WeatherDashboard() {
             )}
 
             {/* Loading Skeleton */}
-            {isWeatherLoading && (
+            {(isWeatherLoading || (geolocation.isLoading && !selectedCity)) && (
               <div className="space-y-6 animate-pulse">
                 <CurrentConditionsSkeleton />
                 <ForecastSkeleton />
@@ -293,14 +350,14 @@ function WeatherDashboard() {
 
             {/* Error Message */}
             {!isWeatherLoading && formattedError && (
-              <div className="rounded-2xl border border-rose-500/20 bg-rose-500/10 p-6 text-center">
-                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-rose-500/20 text-rose-600 dark:text-rose-400">
+              <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center shadow-sm">
+                <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--color-surface-secondary)] text-error-500">
                   <AlertTriangle className="h-5 w-5" />
                 </div>
-                <h3 className="text-sm font-semibold text-rose-700 dark:text-rose-300">
+                <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">
                   {formattedError.title}
                 </h3>
-                <p className="mt-1 text-xs text-rose-600 dark:text-rose-400 max-w-md mx-auto">
+                <p className="mt-1 text-xs text-[var(--color-text-secondary)] max-w-md mx-auto">
                   {formattedError.description}
                 </p>
                 {formattedError.action && (

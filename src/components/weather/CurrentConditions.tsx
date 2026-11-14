@@ -29,20 +29,35 @@ export function CurrentConditions({
   return (
     <section
       aria-label="Current weather conditions"
-      className="rounded-xl bg-[var(--color-surface-secondary)] p-6"
+      className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm"
     >
       {/* Main temperature + icon */}
       <div className="flex items-start justify-between">
         <div>
-          <p className="tabular-nums text-6xl font-light tracking-tight text-[var(--color-text-primary)]">
-            {formatTemperature(current.temperature, unit)}
-          </p>
-          <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
-            Feels like{' '}
-            <span className="tabular-nums">
-              {formatTemperatureWithUnit(current.feelsLike, unit)}
-            </span>
-          </p>
+          <div className="flex items-baseline gap-3">
+            <p className="tabular-nums text-6xl font-light tracking-tight text-[var(--color-text-primary)]">
+              {formatTemperature(current.temperature, unit)}
+            </p>
+            <div className="space-y-0.5 text-xs text-[var(--color-text-secondary)]">
+              <p>
+                Feels like{' '}
+                <span className="tabular-nums font-medium text-[var(--color-text-primary)]">
+                  {formatTemperatureWithUnit(current.feelsLike, unit)}
+                </span>
+              </p>
+              <p>
+                H:{' '}
+                <span className="tabular-nums font-medium text-[var(--color-text-primary)]">
+                  {formatTemperature(current.highToday, unit)}
+                </span>
+                {' '}•{' '}
+                L:{' '}
+                <span className="tabular-nums font-medium text-[var(--color-text-primary)]">
+                  {formatTemperature(current.lowToday, unit)}
+                </span>
+              </p>
+            </div>
+          </div>
           <p className="mt-2 text-base font-medium text-[var(--color-text-primary)]">
             {current.conditionText}
           </p>
@@ -54,37 +69,25 @@ export function CurrentConditions({
         />
       </div>
 
-      {/* Stats */}
-      <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-[var(--color-text-secondary)]">
-        <span className="inline-flex items-center gap-1.5">
-          <Droplets size={16} aria-hidden="true" />
-          <span>{current.humidity}%</span>
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <Wind size={16} aria-hidden="true" />
+      {/* Atmospheric stats + Time & Refresh */}
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-y-3 pt-4 border-t border-[var(--color-border)] text-sm text-[var(--color-text-secondary)]">
+        {/* Humidity + Wind closely grouped */}
+        <div className="flex items-center gap-4">
+          <span className="inline-flex items-center gap-1.5">
+            <Droplets size={16} aria-hidden="true" />
+            <span>{current.humidity}%</span>
+          </span>
+          <span className="inline-flex items-center gap-1.5">
+            <Wind size={16} aria-hidden="true" />
+            <span>
+              {formatWindSpeed(current.windSpeed, unit)}
+              {compass ? ` ${compass}` : ''}
+            </span>
+          </span>
           <span>
-            {formatWindSpeed(current.windSpeed, unit)}
-            {compass ? ` ${compass}` : ''}
+            {formatLocalTime(current.timezoneOffset)}
           </span>
-        </span>
-        <span>
-          {formatLocalTime(current.timezoneOffset)}
-        </span>
-      </div>
-
-      {/* High / Low */}
-      <div className="mt-4 flex items-center justify-between text-sm">
-        <p className="text-[var(--color-text-secondary)]">
-          H:{' '}
-          <span className="tabular-nums font-medium text-[var(--color-text-primary)]">
-            {formatTemperature(current.highToday, unit)}
-          </span>
-          {'  '}
-          L:{' '}
-          <span className="tabular-nums font-medium text-[var(--color-text-primary)]">
-            {formatTemperature(current.lowToday, unit)}
-          </span>
-        </p>
+        </div>
 
         {/* Updated + Refresh */}
         <div className="flex items-center gap-2 text-[var(--color-text-tertiary)]">

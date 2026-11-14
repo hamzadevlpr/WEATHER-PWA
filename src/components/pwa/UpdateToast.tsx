@@ -16,10 +16,10 @@ export function UpdateToast({ needsUpdate, onUpdate }: UpdateToastProps) {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 50, opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed bottom-4 right-4 z-50 flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-lg"
+          className="fixed bottom-4 right-4 z-50 flex items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3 shadow-sm"
         >
           <div className="flex items-center gap-2">
-            <RefreshCw className="h-4 w-4 text-sky-500 animate-spin" />
+            <RefreshCw className="h-4 w-4 text-sky-500" />
             <p className="text-xs font-medium text-[var(--color-text-primary)]">
               New version available
             </p>

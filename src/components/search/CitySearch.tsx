@@ -1,11 +1,13 @@
 import { useCallback, useId, useRef, useState } from 'react';
-import { Search, Loader2, AlertCircle, X } from 'lucide-react';
+import { Search, Loader2, AlertCircle, X, Navigation } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { SuggestionList } from './SuggestionList';
 import type { CityResult, AppError } from '@/types';
 
 interface CitySearchProps {
   onCitySelect: (city: CityResult) => void;
+  onUseCurrentLocation?: () => void;
+  isLocating?: boolean;
   disabled?: boolean;
   query: string;
   setQuery: (q: string) => void;
@@ -19,6 +21,8 @@ interface CitySearchProps {
 
 export function CitySearch({
   onCitySelect,
+  onUseCurrentLocation,
+  isLocating = false,
   disabled = false,
   query,
   setQuery,
@@ -44,7 +48,13 @@ export function CitySearch({
     trimmedQuery.length >= 2 && !isLoading && !hasResults && !error;
 
   const visibleItems = showRecents ? recentSearches : results;
-  const expanded = isOpen && (visibleItems.length > 0 || isLoading || showNoResults || error !== null);
+  const expanded =
+    isOpen &&
+    (visibleItems.length > 0 ||
+      isLoading ||
+      showNoResults ||
+      error !== null ||
+      !!onUseCurrentLocation);
 
   const activeItem = activeIndex >= 0 ? visibleItems[activeIndex] : undefined;
   const activeDescendant = activeItem
@@ -206,6 +216,27 @@ export function CitySearch({
             <X size={16} aria-hidden="true" />
           </button>
         )}
+
+        {/* Current location button when input is empty */}
+        {query.length === 0 && onUseCurrentLocation && !disabled && (
+          <button
+            type="button"
+            onClick={onUseCurrentLocation}
+            disabled={isLocating}
+            className={cn(
+              'absolute inset-y-0 right-2.5 flex items-center px-1 text-[var(--color-text-tertiary)]',
+              'hover:text-sky-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded transition-colors',
+            )}
+            title="Use current location"
+            aria-label="Use current location"
+          >
+            {isLocating ? (
+              <Loader2 size={16} className="animate-spin text-sky-500" />
+            ) : (
+              <Navigation size={16} />
+            )}
+          </button>
+        )}
       </div>
 
       {/* Validation error */}
@@ -225,9 +256,29 @@ export function CitySearch({
           className={cn(
             'absolute z-50 mt-1 w-full overflow-hidden rounded-lg border',
             'border-[var(--color-border)] bg-[var(--color-surface)]',
-            'shadow-lg',
+            'shadow-sm',
           )}
         >
+          {/* Quick option: Use device location */}
+          {onUseCurrentLocation && (
+            <button
+              type="button"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                onUseCurrentLocation();
+                setIsOpen(false);
+              }}
+              disabled={isLocating}
+              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-xs font-medium text-sky-600 dark:text-sky-400 hover:bg-[var(--color-surface-secondary)] border-b border-[var(--color-border)] transition-colors text-left"
+            >
+              {isLocating ? (
+                <Loader2 size={14} className="animate-spin text-sky-500 shrink-0" />
+              ) : (
+                <Navigation size={14} className="shrink-0" />
+              )}
+              <span>{isLocating ? 'Locating your device…' : 'Use current device location'}</span>
+            </button>
+          )}
           {/* Recent searches */}
           {showRecents && (
             <SuggestionList

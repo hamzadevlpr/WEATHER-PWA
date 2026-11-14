@@ -96,4 +96,5 @@ export const STORAGE_KEYS = {
   lastCity: 'weatherboard:v1:lastCity',
   lastWeather: 'weatherboard:v1:lastWeather',
   lastNotifiedDate: 'weatherboard:v1:lastNotifiedDate',
+  isManualCity: 'weatherboard:v1:isManualCity',
 } as const;

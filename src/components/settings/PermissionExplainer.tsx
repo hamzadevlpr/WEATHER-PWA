@@ -26,8 +26,8 @@ export function PermissionExplainer({ open, onOpenChange, onAllow }: PermissionE
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-md p-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-sky-500/10 text-sky-500">
-            <Bell className="h-5 w-5" />
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]">
+            <Bell className="h-4 w-4" />
           </div>
           <div>
             <DialogTitle className="text-base font-semibold">Enable morning weather reminders</DialogTitle>
@@ -37,7 +37,7 @@ export function PermissionExplainer({ open, onOpenChange, onAllow }: PermissionE
           </div>
         </div>
 
-        <div className="mt-4 rounded-xl bg-[var(--color-surface-secondary)] p-3 text-xs text-[var(--color-text-secondary)] space-y-1.5 border border-[var(--color-border)]">
+        <div className="mt-4 pt-4 border-t border-[var(--color-border)] text-xs text-[var(--color-text-secondary)] space-y-1.5">
           <p>• Daily summary of temperature and expected conditions</p>
           <p>• Pick your preferred time (default 07:30 AM)</p>
           <p>• Completely client-side and privacy friendly</p>

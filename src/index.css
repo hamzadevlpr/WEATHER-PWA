@@ -28,10 +28,12 @@
 
   --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, sans-serif;
 
+  --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 20px;
+  --radius-2xl: 24px;
 }
 
 @layer base {
@@ -118,62 +120,6 @@
 /* Tabular numbers for temperatures */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
-}
-
-/* Animated weather icon keyframes */
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes drift {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(6px);
-  }
-}
-
-@keyframes fall {
-  0% {
-    transform: translateY(-8px);
-    opacity: 0;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(8px);
-    opacity: 0;
-  }
-}
-
-@keyframes flash {
-  0%,
-  90%,
-  100% {
-    opacity: 0;
-  }
-  92%,
-  96% {
-    opacity: 1;
-  }
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

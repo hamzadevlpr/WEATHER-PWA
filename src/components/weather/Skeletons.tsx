@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/Skeleton';
 export function CurrentConditionsSkeleton() {
   return (
     <div
-      className="space-y-6 rounded-xl bg-[var(--color-surface-secondary)] p-6"
+      className="space-y-6 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm"
       aria-busy="true"
       aria-label="Loading current conditions"
     >
@@ -36,23 +36,24 @@ export function CurrentConditionsSkeleton() {
 export function ForecastSkeleton() {
   return (
     <div
-      className="space-y-3"
+      className="overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] divide-y divide-[var(--color-border)] shadow-sm"
       aria-busy="true"
       aria-label="Loading forecast"
     >
       {Array.from({ length: 5 }, (_, i) => (
         <div
           key={i}
-          className="flex items-center gap-4 rounded-lg bg-[var(--color-surface-secondary)] p-4"
+          className="flex items-center gap-4 px-4 py-3"
         >
-          <Skeleton className="h-5 w-12" />
-          <Skeleton className="h-8 w-8 rounded-full" />
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-7 w-7 rounded-full" />
           <div className="flex flex-1 items-center gap-3">
-            <Skeleton className="h-4 w-10" />
-            <Skeleton className="h-2 flex-1 rounded-full" />
-            <Skeleton className="h-4 w-10" />
+            <Skeleton className="h-1.5 flex-1 rounded-full" />
           </div>
-          <Skeleton className="h-4 w-12" />
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-4 w-8" />
+            <Skeleton className="h-4 w-8" />
+          </div>
         </div>
       ))}
     </div>

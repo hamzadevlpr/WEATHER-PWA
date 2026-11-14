@@ -39,21 +39,19 @@ const typeConfig: Record<
 > = {
   info: {
     icon: Info,
-    containerClass: 'border-primary-500/30 bg-primary-500/10 text-primary-500',
+    containerClass: 'border-[var(--color-border)] text-primary-500',
   },
   success: {
     icon: CheckCircle2,
-    containerClass:
-      'border-success-500/30 bg-success-500/10 text-success-500',
+    containerClass: 'border-[var(--color-border)] text-success-500',
   },
   warning: {
     icon: AlertTriangle,
-    containerClass:
-      'border-warning-500/30 bg-warning-500/10 text-warning-500',
+    containerClass: 'border-[var(--color-border)] text-warning-500',
   },
   error: {
     icon: XCircle,
-    containerClass: 'border-error-500/30 bg-error-500/10 text-error-500',
+    containerClass: 'border-[var(--color-border)] text-error-500',
   },
 };
 
@@ -75,7 +73,7 @@ function ToastItem({
       transition={{ duration: 0.25, ease: 'easeOut' }}
       role="alert"
       className={cn(
-        'pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-lg border p-4 shadow-lg',
+        'pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-lg border p-4 shadow-sm',
         'bg-[var(--color-surface)] text-[var(--color-text-primary)]',
         containerClass,
       )}

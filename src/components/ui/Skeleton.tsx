@@ -10,11 +10,7 @@ function Skeleton({ className, width, height, style, ...props }: SkeletonProps) 
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-md bg-[var(--color-surface-secondary)]',
-        'before:absolute before:inset-0',
-        'before:bg-gradient-to-r before:from-transparent before:via-[var(--color-surface-tertiary)] before:to-transparent',
-        'before:animate-[shimmer_2s_ease-in-out_infinite]',
-        'before:-translate-x-full',
+        'rounded-md bg-[var(--color-surface-secondary)] animate-pulse',
         className,
       )}
       style={{

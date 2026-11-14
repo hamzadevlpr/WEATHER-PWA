@@ -248,3 +248,57 @@ Add `npm run test`, `npm run lint`, `npm run typecheck`, `npm run build`, `npm r
 - [ ] README is complete and a new developer can run the app in under 5 minutes.
 
 Do not leave TODO placeholders, mock data, or commented-out code in the final result. If you must deviate from anything above, explain why in the README under "Decisions and trade-offs."
+
+Warning: Encountered two children with the same key, ``. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+getting this errro in the console
+
+
+DESIGN CLEANUP: apply these changes across the whole UI. They override the earlier spec wherever they conflict.
+
+1. Remove all gradients and glows: no gradient backgrounds (including the condition-aware card gradient), no glow or colored box-shadows, no blurred blobs. Use flat solid surfaces from the theme tokens, with 1px borders and at most a very subtle neutral shadow.
+
+2. Replace every emoji with real icons: use lucide-react for UI icons, and the existing SVG weather icon set for conditions. No emoji anywhere in the UI, empty states, toasts or notifications.
+
+3. Delete meaningless badges: remove any badge, pill or tag that doesn't carry real information the user needs. Keep only functional ones (e.g. offline status, "Data: Open-Meteo" when the fallback is used, unit label).
+
+4. Flatten nested cards: no card inside a card. Inside a card, separate sections with spacing or a 1px divider, not another bordered or shaded box.
+
+5. Group related items and tighten spacing: related elements (temperature with feels-like, humidity with wind, a day's high with its low) sit close together. Use larger gaps between unrelated groups, so proximity shows the structure.
+
+6. Match nested corner radii: inner radius = outer radius − padding between them (e.g. a 16px card with 8px padding has 8px inner elements). Define this with radius tokens and apply it consistently to cards, inputs, chips, buttons and dialogs.
+
+7. Limit animation: remove all infinite or looping animations (rotating sun, drifting clouds, pulsing elements). Animate only what matters: loading skeletons while loading, the one-time entrance of results, dialog and toast transitions, and state changes such as the unit toggle. Weather icons should be static, or play once on load. Keep prefers-reduced-motion support.
+
+Run typecheck, lint and build when done, and give me a short list of what changed.
+
+
+
+FEATURE: use Lottie animated weather icons for the weather conditions. This replaces the CSS/SVG animated icon set, and overrides the earlier spec where they conflict.
+
+Assets: Lottie files are in [src/assets/lottie/ or /public/lottie/]. I will add them as [.json / .lottie] files. If a file is missing for a condition, use the static SVG fallback described below.
+
+1. Library: install `lottie-react` for .json files, or `@lottiefiles/dotlottie-react` for .lottie files. Use one only.
+
+2. Mapping: create `src/lib/weatherIcons.ts` that maps the internal condition enum (clear, partly-cloudy, cloudy, rain, drizzle, thunderstorm, snow, mist/fog) plus day/night to a Lottie file. Both providers (OpenWeatherMap and Open-Meteo) already normalize to this enum, so the mapping is the only place that changes. Unknown conditions use a generic cloud icon.
+
+3. Component: rework `WeatherIcon` to take `{ condition, isNight, size }`. Keep the same props so no other component changes.
+   - Lazy-load the animation data (dynamic import) so the initial bundle stays small. Only load the icon files actually needed.
+   - Reserve the icon's width and height so nothing shifts while it loads.
+   - Show a static SVG or lucide icon as the fallback while loading and on any load error.
+
+4. Animation rules (these follow the earlier design cleanup, so no endless motion):
+   - Play once on first render, then stop on the final frame. No infinite loops.
+   - The large current-conditions icon plays once; the 5-day forecast and favourites icons stay static (use a still frame).
+   - If `prefers-reduced-motion` is set, never play. Show the still frame only.
+   - Pause when the tab is hidden.
+
+5. Offline/PWA: add the Lottie files to the service worker precache so icons work offline. Keep the total icon payload small, and optimise or minify the files if any is over ~50 KB.
+
+6. Accessibility: the icon is decorative when the condition text is shown next to it (`aria-hidden="true"`). Otherwise give it an `aria-label` with the condition name.
+
+7. Cleanup: delete the old CSS keyframe icon code and any unused assets. Add credits and license notes for the animations in the README. Note that some LottieFiles animations require attribution.
+
+8. Tests: a test for the condition → icon mapping, including the day/night variants and the unknown-condition fallback.
+
+Run typecheck, lint, tests and build when done, and list what changed.

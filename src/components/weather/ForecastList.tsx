@@ -21,10 +21,10 @@ export function ForecastList({ daily, unit }: ForecastListProps) {
 
   return (
     <section aria-label="Weather forecast">
-      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">
+      <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">
         {daily.length}-Day Forecast
       </h2>
-      <div className="space-y-2">
+      <div className="overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] divide-y divide-[var(--color-border)] shadow-sm">
         {daily.map((day, index) => (
           <ForecastDay
             key={day.date || `day-${index}`}
