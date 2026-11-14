@@ -302,3 +302,23 @@ Assets: Lottie files are in [src/assets/lottie/ or /public/lottie/]. I will add 
 8. Tests: a test for the condition → icon mapping, including the day/night variants and the unknown-condition fallback.
 
 Run typecheck, lint, tests and build when done, and list what changed.
+
+
+TASK: audit and fix responsive design. The app must work correctly at 375px (mobile), 768px (tablet) and 1280px (desktop).
+
+Requirements:
+- No horizontal scroll at any width from 320px to 1920px.
+- Touch targets are at least 44x44px on mobile (buttons, icon buttons, favourite chips, suggestion options, switches, dialog close buttons, toggles).
+
+Please do the following:
+1. Layout per breakpoint:
+   - 375px: single column, sticky search at the top, favourites as horizontally scrollable chips (scroll inside their own container, never the page), forecast as a vertical list or a compact grid.
+   - 768px: two-column hybrid, with the forecast in a row or grid.
+   - 1280px: favourites sidebar plus a main dashboard grid, with a max content width so it doesn't stretch on wide screens.
+2. Fix overflow: look for fixed widths, long city names (use truncate or wrap, with min-w-0 on flex children), wide dialogs and dropdowns (max-w-[calc(100vw-2rem)]), and the offline banner and toasts. Use dvh instead of vh, and add safe-area insets for notched phones.
+3. Touch targets: set min-h-11 min-w-11 (44px) on all interactive elements on mobile. Small visual icons can keep their size if the clickable area is padded to 44px. Keep at least 8px between adjacent targets.
+4. Text and inputs: use 16px minimum font size on inputs (prevents iOS zoom on focus), and no clipped or overlapping text at any width.
+5. Verify, don't assume: write a Playwright test (or a script) that loads the app at 375, 768 and 1280 and asserts document.documentElement.scrollWidth <= window.innerWidth. Also check that every button, link, input and [role=option] has a bounding box of at least 44x44 at 375px. Test the main states: home, loaded weather, search dropdown open, favourites full, settings dialog, offline banner.
+6. Take a screenshot at each width and check it visually for broken layouts.
+
+Run typecheck, lint, tests and build when done. Then list which problems you found and fixed.
