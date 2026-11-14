@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:responsive": "node scripts/audit-responsive.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

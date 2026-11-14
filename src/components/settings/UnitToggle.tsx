@@ -23,7 +23,7 @@ export const UnitToggle: React.FC<UnitToggleProps> = ({
       role="radiogroup"
       aria-label="Temperature unit selection"
       className={cn(
-        'inline-flex p-1 gap-2 rounded-xl bg-[var(--color-surface-secondary)] border border-[var(--color-border)]',
+        'flex w-full sm:w-auto p-1 gap-1 sm:gap-2 rounded-xl bg-[var(--color-surface-secondary)] border border-[var(--color-border)]',
         className,
       )}
     >
@@ -37,7 +37,7 @@ export const UnitToggle: React.FC<UnitToggleProps> = ({
             type="button"
             onClick={() => onChange(option.value)}
             className={cn(
-              'flex min-h-11 min-w-11 sm:min-h-9 items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-xs font-medium transition-all outline-none',
+              'flex-1 min-w-0 flex min-h-11 sm:min-h-9 items-center justify-center gap-1.5 rounded-lg px-3 sm:px-4 py-2 text-xs font-medium transition-all outline-none',
               isSelected
                 ? 'bg-[var(--color-surface)] text-primary-500 shadow-sm border border-[var(--color-border)]'
                 : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
@@ -45,7 +45,7 @@ export const UnitToggle: React.FC<UnitToggleProps> = ({
             )}
           >
             <span className="font-semibold text-sm">{option.symbol}</span>
-            <span>{option.label}</span>
+            <span className="truncate">{option.label}</span>
           </button>
         );
       })}

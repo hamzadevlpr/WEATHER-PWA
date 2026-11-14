@@ -150,12 +150,13 @@ async function runAudit() {
 
     // State C: Favourites Full (5 favourites)
     await page.evaluate(() => {
+      const now = Date.now();
       const mockFavs = [
-        { id: 'f1', name: 'Karachi', region: 'Sindh', country: 'Pakistan', latitude: 24.86, longitude: 67.0 },
-        { id: 'f2', name: 'Lahore', region: 'Punjab', country: 'Pakistan', latitude: 31.55, longitude: 74.34 },
-        { id: 'f3', name: 'Islamabad', region: 'Capital', country: 'Pakistan', latitude: 33.68, longitude: 73.05 },
-        { id: 'f4', name: 'Peshawar', region: 'KPK', country: 'Pakistan', latitude: 34.01, longitude: 71.52 },
-        { id: 'f5', name: 'Quetta', region: 'Balochistan', country: 'Pakistan', latitude: 30.18, longitude: 66.97 },
+        { id: 'f1', name: 'Karachi', region: 'Sindh', country: 'Pakistan', latitude: 24.86, longitude: 67.0, addedAt: now },
+        { id: 'f2', name: 'Lahore', region: 'Punjab', country: 'Pakistan', latitude: 31.55, longitude: 74.34, addedAt: now },
+        { id: 'f3', name: 'Islamabad', region: 'Capital', country: 'Pakistan', latitude: 33.68, longitude: 73.05, addedAt: now },
+        { id: 'f4', name: 'Peshawar', region: 'KPK', country: 'Pakistan', latitude: 34.01, longitude: 71.52, addedAt: now },
+        { id: 'f5', name: 'Quetta', region: 'Balochistan', country: 'Pakistan', latitude: 30.18, longitude: 66.97, addedAt: now },
       ];
       localStorage.setItem('weatherboard:v1:favourites', JSON.stringify(mockFavs));
     });
@@ -192,7 +193,13 @@ async function runAudit() {
 
   } finally {
     await browser.close();
-    server.kill();
+    try {
+      if (server.pid) {
+        spawn('taskkill', ['/pid', server.pid.toString(), '/f', '/t']);
+      }
+    } catch {
+      server.kill();
+    }
   }
 
   console.log('\n--- AUDIT SUMMARY ---');

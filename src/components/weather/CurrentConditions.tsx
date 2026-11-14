@@ -29,7 +29,7 @@ export function CurrentConditions({
   return (
     <section
       aria-label="Current weather conditions"
-      className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm"
+      className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:p-6 shadow-sm"
     >
       {/* Main temperature + icon */}
       <div className="flex items-start justify-between gap-4">

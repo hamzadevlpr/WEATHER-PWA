@@ -172,14 +172,14 @@ export function ReminderSettingsComponent({
             />
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
             <span className="text-xs text-[var(--color-text-tertiary)]">Preview notification</span>
             <Button
               variant="secondary"
               size="sm"
               loading={testSending}
               onClick={handleSendTest}
-              className="min-h-11 min-w-11 px-3 text-xs"
+              className="min-h-11 min-w-11 px-3 text-xs w-full sm:w-auto justify-center"
             >
               <Send className="mr-1.5 h-3.5 w-3.5 shrink-0" />
               <span>Send test notification</span>
@@ -209,10 +209,10 @@ export function ReminderSettingsComponent({
             <button
               type="button"
               onClick={() => setShowTroubleshooting((prev) => !prev)}
-              className="min-h-11 flex items-center gap-1.5 text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors py-2"
+              className="min-h-11 flex items-center gap-1.5 text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors py-2 text-left w-full"
             >
               <HelpCircle className="h-3.5 w-3.5 shrink-0" />
-              <span>Notification not appearing? Troubleshooting tips</span>
+              <span className="text-left">Notification not appearing? Troubleshooting tips</span>
             </button>
 
             {showTroubleshooting && (

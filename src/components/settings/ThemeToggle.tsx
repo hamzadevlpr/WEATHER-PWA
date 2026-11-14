@@ -15,9 +15,9 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
   className,
 }) => {
   const options: { value: ThemeMode; label: string; icon: React.ReactNode }[] = [
-    { value: 'light', label: 'Light', icon: <Sun className="h-4 w-4" /> },
-    { value: 'dark', label: 'Dark', icon: <Moon className="h-4 w-4" /> },
-    { value: 'system', label: 'System', icon: <Monitor className="h-4 w-4" /> },
+    { value: 'light', label: 'Light', icon: <Sun className="h-4 w-4 shrink-0" /> },
+    { value: 'dark', label: 'Dark', icon: <Moon className="h-4 w-4 shrink-0" /> },
+    { value: 'system', label: 'System', icon: <Monitor className="h-4 w-4 shrink-0" /> },
   ];
 
   return (
@@ -25,7 +25,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       role="radiogroup"
       aria-label="Theme selection"
       className={cn(
-        'inline-flex p-1 gap-2 rounded-xl bg-[var(--color-surface-secondary)] border border-[var(--color-border)]',
+        'flex w-full sm:w-auto p-1 gap-1 sm:gap-2 rounded-xl bg-[var(--color-surface-secondary)] border border-[var(--color-border)]',
         className,
       )}
     >
@@ -39,7 +39,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
             type="button"
             onClick={() => onChange(option.value)}
             className={cn(
-              'flex min-h-11 min-w-11 sm:min-h-9 items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-medium transition-all outline-none',
+              'flex-1 min-w-0 flex min-h-11 sm:min-h-9 items-center justify-center gap-1.5 sm:gap-2 rounded-lg px-2 sm:px-3 py-2 text-xs font-medium transition-all outline-none',
               isSelected
                 ? 'bg-[var(--color-surface)] text-primary-500 shadow-sm border border-[var(--color-border)]'
                 : 'text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]',
@@ -47,7 +47,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
             )}
           >
             {option.icon}
-            <span>{option.label}</span>
+            <span className="truncate">{option.label}</span>
           </button>
         );
       })}

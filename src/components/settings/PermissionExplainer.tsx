@@ -24,7 +24,7 @@ export function PermissionExplainer({ open, onOpenChange, onAllow }: PermissionE
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md p-6">
+      <DialogContent className="max-w-md">
         <div className="flex items-center gap-3">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-[var(--color-surface-secondary)] text-[var(--color-text-primary)]">
             <Bell className="h-4 w-4" />

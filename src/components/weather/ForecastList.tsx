@@ -24,9 +24,9 @@ export function ForecastList({ daily, unit }: ForecastListProps) {
       <h2 className="mb-2 text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)]">
         {daily.length}-Day Forecast
       </h2>
-      <div className="overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] divide-y md:divide-y-0 divide-[var(--color-border)] md:grid md:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 md:gap-px md:bg-[var(--color-border)] shadow-sm">
+      <div className="overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] divide-y md:divide-y-0 md:divide-x divide-[var(--color-border)] md:grid md:grid-cols-5 shadow-sm">
         {daily.map((day, index) => (
-          <div key={day.date || `day-${index}`} className="bg-[var(--color-surface)]">
+          <div key={day.date || `day-${index}`} className="bg-[var(--color-surface)] h-full">
             <ForecastDay
               day={day}
               unit={unit}

@@ -41,7 +41,7 @@ const DialogContent = forwardRef<
     <DialogPrimitive.Content ref={ref} asChild {...props}>
       <motion.div
         className={cn(
-          'fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6',
+          'fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 overflow-y-auto overscroll-contain',
         )}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -50,11 +50,13 @@ const DialogContent = forwardRef<
       >
         <motion.div
           className={cn(
-            'relative w-full max-w-[480px] max-w-[calc(100vw-2rem)]',
-            'rounded-xl border border-[var(--color-border)]',
+            'relative my-auto w-full max-w-[480px] max-w-[calc(100vw-1.5rem)]',
+            'max-h-[calc(100dvh-1.5rem)] sm:max-h-[88dvh]',
+            'overflow-y-auto overscroll-contain',
+            'rounded-2xl sm:rounded-xl border border-[var(--color-border)]',
             'bg-[var(--color-surface)] text-[var(--color-text-primary)]',
-            'shadow-sm',
-            'p-5 sm:p-6',
+            'shadow-lg',
+            'p-4 sm:p-6',
             'focus:outline-none',
             className,
           )}
@@ -64,16 +66,16 @@ const DialogContent = forwardRef<
           transition={{ duration: 0.2, ease: 'easeOut' }}
           onClick={(e) => e.stopPropagation()}
         >
-          {children}
           {showClose && (
             <DialogPrimitive.Close
-              className="absolute right-2 top-2 sm:right-3 sm:top-3 min-h-11 min-w-11 flex items-center justify-center rounded-md text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
+              className="sticky top-0 float-right -mr-1 -mt-1 sm:-mr-2 sm:-mt-2 z-20 min-h-11 min-w-11 flex items-center justify-center rounded-md bg-[var(--color-surface)]/90 backdrop-blur-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
               aria-label="Close dialog"
             >
               <X className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">Close</span>
             </DialogPrimitive.Close>
           )}
+          {children}
         </motion.div>
       </motion.div>
     </DialogPrimitive.Content>
