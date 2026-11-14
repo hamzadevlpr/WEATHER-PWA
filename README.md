@@ -40,7 +40,7 @@ WeatherBoard is a production-grade, installable Progressive Web Application (PWA
 
 6. **Design & Micro-Interactions**
    - **Tailwind CSS v4** styling with `@theme` custom tokens and high-contrast color ramps.
-   - **Animated SVG Weather Icons**: Day/night variations with rotating sun rays, drifting clouds, falling precipitation, and flashing lightning bolts.
+   - **Clean Vector SVG Weather Icons**: Day/night variations rendered as lightweight inline SVGs.
    - Full support for `prefers-reduced-motion` and mobile safe-area insets (`env(safe-area-inset-*)`).
    - Instant Dark / Light / System theme toggle without page flash.
 
@@ -54,8 +54,8 @@ WeatherBoard is a production-grade, installable Progressive Web Application (PWA
 | Styling | **Tailwind CSS v4** + `@fontsource-variable/inter` |
 | Server State | **TanStack Query v5** (caching, background refetch, retries) |
 | Validation | **Zod** (API contracts & localStorage resilience) |
-| Motion | **Framer Motion** + CSS Keyframes |
-| Icons | **lucide-react** + Handcrafted Animated SVGs |
+| Motion | **Framer Motion** |
+| Icons | **lucide-react** + Handcrafted SVGs |
 | PWA & Offline | **vite-plugin-pwa** (`injectManifest`), **Workbox** |
 | Accessibility | **Radix UI** primitives (`@radix-ui/react-dialog`, `@radix-ui/react-switch`) |
 | Testing | **Vitest** + **@testing-library/react** + **jsdom** |

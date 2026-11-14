@@ -1,10 +1,14 @@
 import { memo } from 'react';
 import type { WeatherCondition } from '@/types';
 
-interface WeatherIconProps {
+export interface WeatherIconProps {
   condition: WeatherCondition;
-  isDay: boolean;
+  isDay?: boolean;
+  isNight?: boolean;
   size?: number;
+  className?: string;
+  'aria-label'?: string;
+  'aria-hidden'?: boolean | 'true' | 'false';
 }
 
 // Color palettes for day/night
@@ -314,19 +318,26 @@ function getWeatherSvg(
 export const WeatherIcon = memo(function WeatherIcon({
   condition,
   isDay,
+  isNight,
   size = 48,
+  className,
+  'aria-label': ariaLabel,
+  'aria-hidden': ariaHidden,
 }: WeatherIconProps) {
+  const day = isNight !== undefined ? !isNight : (isDay ?? true);
+
   return (
     <svg
       width={size}
       height={size}
       viewBox={`0 0 ${size} ${size}`}
       fill="none"
-      aria-hidden="true"
+      aria-hidden={ariaHidden ?? true}
+      aria-label={ariaLabel}
       role="img"
-      className="shrink-0"
+      className={className ? `shrink-0 ${className}` : 'shrink-0'}
     >
-      {getWeatherSvg(condition, isDay, size)}
+      {getWeatherSvg(condition, day, size)}
     </svg>
   );
 });

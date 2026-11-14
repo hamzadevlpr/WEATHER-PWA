@@ -61,7 +61,7 @@ export const FavouriteChip: React.FC<FavouriteChipProps> = ({
         }
       }}
       className={cn(
-        'group relative flex min-h-[44px] cursor-pointer items-center justify-between gap-3 rounded-sm px-3 py-2 transition-all outline-none',
+        'group relative flex min-h-11 min-w-[140px] cursor-pointer items-center justify-between gap-2.5 rounded-xl px-3 py-2 transition-all outline-none',
         'border border-[var(--color-border)]',
         isSelected
           ? 'bg-primary-500/10 border-primary-500 text-primary-500'
@@ -72,24 +72,24 @@ export const FavouriteChip: React.FC<FavouriteChipProps> = ({
       aria-pressed={isSelected}
       aria-label={`View weather for ${city.name}, ${city.country}`}
     >
-      <div className="flex items-center gap-2.5 overflow-hidden">
+      <div className="flex items-center gap-2 overflow-hidden min-w-0">
         {condition && (
           <ConditionIcon
             condition={condition}
             className="h-4 w-4 shrink-0 text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]"
           />
         )}
-        <div className="truncate">
+        <div className="truncate min-w-0">
           <span className="text-sm font-medium leading-none truncate block">
             {city.name}
           </span>
-          <span className="text-xs text-[var(--color-text-tertiary)] truncate block">
+          <span className="text-xs text-[var(--color-text-tertiary)] truncate block mt-0.5">
             {city.region ? `${city.region}, ${city.country}` : city.country}
           </span>
         </div>
       </div>
 
-      <div className="flex items-center gap-2 shrink-0">
+      <div className="flex items-center gap-1.5 shrink-0 ml-1">
         {temperature && (
           <span className="text-sm font-semibold tabular-nums text-[var(--color-text-primary)]">
             {temperature}
@@ -102,7 +102,7 @@ export const FavouriteChip: React.FC<FavouriteChipProps> = ({
             onRemove(e);
           }}
           className={cn(
-            'flex h-6 w-6 items-center justify-center rounded-xs text-[var(--color-text-tertiary)]',
+            '-mr-1.5 min-h-11 min-w-11 flex items-center justify-center rounded-lg text-[var(--color-text-tertiary)]',
             'transition-colors hover:bg-[var(--color-surface-tertiary)] hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40',
           )}
           aria-label={`Remove ${city.name} from favourites`}

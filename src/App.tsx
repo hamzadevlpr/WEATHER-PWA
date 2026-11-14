@@ -49,11 +49,19 @@ const queryClient = new QueryClient({
 });
 
 const DEFAULT_POPULAR_CITIES: CityResult[] = [
-  { id: 'london', name: 'London', region: 'England', country: 'United Kingdom', latitude: 51.5074, longitude: -0.1278 },
-  { id: 'newyork', name: 'New York', region: 'New York', country: 'United States', latitude: 40.7128, longitude: -74.0060 },
-  { id: 'tokyo', name: 'Tokyo', region: 'Tokyo', country: 'Japan', latitude: 35.6762, longitude: 139.6503 },
+  { id: 'karachi', name: 'Karachi', region: 'Sindh', country: 'Pakistan', latitude: 24.8607, longitude: 67.0011 },
   { id: 'lahore', name: 'Lahore', region: 'Punjab', country: 'Pakistan', latitude: 31.5497, longitude: 74.3436 },
-  { id: 'sydney', name: 'Sydney', region: 'New South Wales', country: 'Australia', latitude: -33.8688, longitude: 151.2093 },
+  { id: 'islamabad', name: 'Islamabad', region: 'Islamabad Capital Territory', country: 'Pakistan', latitude: 33.6844, longitude: 73.0479 },
+  { id: 'rawalpindi', name: 'Rawalpindi', region: 'Punjab', country: 'Pakistan', latitude: 33.5651, longitude: 73.0169 },
+  { id: 'faisalabad', name: 'Faisalabad', region: 'Punjab', country: 'Pakistan', latitude: 31.4504, longitude: 73.1350 },
+  { id: 'multan', name: 'Multan', region: 'Punjab', country: 'Pakistan', latitude: 30.1978, longitude: 71.4697 },
+  { id: 'peshawar', name: 'Peshawar', region: 'Khyber Pakhtunkhwa', country: 'Pakistan', latitude: 34.0151, longitude: 71.5249 },
+  { id: 'quetta', name: 'Quetta', region: 'Balochistan', country: 'Pakistan', latitude: 30.1798, longitude: 66.9750 },
+  { id: 'hyderabad', name: 'Hyderabad', region: 'Sindh', country: 'Pakistan', latitude: 25.3960, longitude: 68.3578 },
+  { id: 'sukkur', name: 'Sukkur', region: 'Sindh', country: 'Pakistan', latitude: 27.7052, longitude: 68.8574 },
+  { id: 'rohri', name: 'Rohri', region: 'Sindh', country: 'Pakistan', latitude: 27.6906, longitude: 68.8950 },
+  { id: 'gujranwala', name: 'Gujranwala', region: 'Punjab', country: 'Pakistan', latitude: 32.1877, longitude: 74.1945 },
+  { id: 'sialkot', name: 'Sialkot', region: 'Punjab', country: 'Pakistan', latitude: 32.4945, longitude: 74.5229 },
 ];
 
 function WeatherDashboard() {
@@ -120,7 +128,7 @@ function WeatherDashboard() {
           }
         });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Periodic reminder background check when tab is visible
@@ -198,7 +206,7 @@ function WeatherDashboard() {
     : null;
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--color-surface)] text-[var(--color-text-primary)] transition-colors duration-200">
+    <div className="min-h-[100dvh] flex flex-col bg-[var(--color-surface)] text-[var(--color-text-primary)] transition-colors duration-200">
       {/* Skip to main content link for keyboard a11y */}
       <a href="#main-content" className="skip-link">
         Skip to main content
@@ -212,23 +220,43 @@ function WeatherDashboard() {
       />
 
       {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3 sm:px-6">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-surface-secondary)] text-primary-500">
-              <CloudSun className="h-5 w-5" />
+      <header className="sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2.5 sm:px-6">
+        <div className="mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 max-w-7xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--color-surface-secondary)] text-primary-500">
+                <CloudSun className="h-5 w-5" />
+              </div>
+              <div>
+                <h1 className="text-base font-bold tracking-tight text-[var(--color-text-primary)]">
+                  WeatherBoard
+                </h1>
+                <p className="hidden text-[11px] font-medium text-[var(--color-text-tertiary)] md:block">
+                  Atmospheric intelligence
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-base font-bold tracking-tight text-[var(--color-text-primary)]">
-                WeatherBoard
-              </h1>
-              <p className="hidden text-[11px] font-medium text-[var(--color-text-tertiary)] sm:block">
-                Atmospheric intelligence
-              </p>
+
+            <div className="flex sm:hidden items-center gap-2">
+              <InstallButton
+                canInstall={canInstall}
+                isInstalled={isInstalled}
+                isIOS={isIOS}
+                onInstall={promptInstall}
+              />
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSettingsOpen(true)}
+                className="min-h-11 min-w-11 p-0 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                aria-label="Settings"
+              >
+                <Settings className="h-5 w-5" />
+              </Button>
             </div>
           </div>
 
-          <div className="flex flex-1 max-w-md mx-2">
+          <div className="flex flex-1 w-full sm:max-w-md sm:mx-2 min-w-0">
             <CitySearch
               query={citySearch.query}
               setQuery={citySearch.setQuery}
@@ -245,7 +273,7 @@ function WeatherDashboard() {
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2">
             <InstallButton
               canInstall={canInstall}
               isInstalled={isInstalled}
@@ -257,7 +285,7 @@ function WeatherDashboard() {
               variant="ghost"
               size="sm"
               onClick={() => setSettingsOpen(true)}
-              className="h-9 w-9 p-0 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+              className="min-h-11 min-w-11 sm:h-9 sm:w-9 sm:min-h-0 sm:min-w-0 p-0 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
               aria-label="Settings"
             >
               <Settings className="h-4 w-4" />
@@ -267,10 +295,10 @@ function WeatherDashboard() {
       </header>
 
       {/* Main Layout Grid */}
-      <main id="main-content" className="mx-auto flex-1 w-full max-w-6xl px-4 py-6 sm:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <main id="main-content" className="mx-auto flex-1 w-full max-w-7xl px-4 py-6 sm:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
           {/* Sidebar / Favourites Panel */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className="col-span-1 md:col-span-4 xl:col-span-3 space-y-4 min-w-0">
             <FavouritesPanel
               favourites={favourites}
               onSelect={handleCitySelect}
@@ -285,13 +313,13 @@ function WeatherDashboard() {
                 <Sparkles className="h-3.5 w-3.5 text-primary-500" />
                 <span>Popular Cities</span>
               </div>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {DEFAULT_POPULAR_CITIES.map((c) => (
                   <button
                     key={c.id}
                     type="button"
                     onClick={() => handleCitySelect(c)}
-                    className="rounded-sm bg-[var(--color-surface-secondary)] px-2.5 py-1 text-xs text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-tertiary)] hover:text-[var(--color-text-primary)] transition-colors border border-[var(--color-border)]"
+                    className="min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg bg-[var(--color-surface-secondary)] px-3 py-2 text-xs font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-tertiary)] hover:text-[var(--color-text-primary)] transition-colors border border-[var(--color-border)]"
                   >
                     {c.name}
                   </button>
@@ -301,37 +329,37 @@ function WeatherDashboard() {
           </div>
 
           {/* Primary Weather View */}
-          <section className="lg:col-span-3 space-y-6" aria-label="Weather forecast">
+          <section className="col-span-1 md:col-span-8 xl:col-span-9 space-y-6 min-w-0" aria-label="Weather forecast">
             {/* Top action row */}
             {selectedCity && (
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-bold tracking-tight text-[var(--color-text-primary)]">
+              <div className="flex items-center justify-between gap-3 min-w-0">
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <h2 className="text-xl font-bold tracking-tight text-[var(--color-text-primary)] truncate">
                       {selectedCity.name}
                     </h2>
                     {isDeviceLocation && (
                       <Navigation
-                        className="h-3.5 w-3.5 text-[var(--color-text-tertiary)]"
+                        className="h-3.5 w-3.5 shrink-0 text-[var(--color-text-tertiary)]"
                         aria-label="Current device location"
                       />
                     )}
                   </div>
-                  <p className="text-xs text-[var(--color-text-tertiary)]">
+                  <p className="text-xs text-[var(--color-text-tertiary)] truncate">
                     {[selectedCity.region, selectedCity.country].filter(Boolean).join(', ')}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                   <Button
                     variant="secondary"
                     size="sm"
                     onClick={handleToggleFavourite}
-                    className="h-8 gap-1.5 text-xs font-medium"
+                    className="min-h-11 min-w-11 sm:min-h-8 sm:h-8 gap-1.5 px-3 text-xs font-medium"
                     aria-label={isCurrentFav ? 'Remove from favourites' : 'Save to favourites'}
                   >
                     <Heart
-                      className={`h-3.5 w-3.5 ${isCurrentFav ? 'fill-rose-500 text-rose-500' : 'text-[var(--color-text-secondary)]'
+                      className={`h-3.5 w-3.5 shrink-0 ${isCurrentFav ? 'fill-rose-500 text-rose-500' : 'text-[var(--color-text-secondary)]'
                         }`}
                     />
                     <span>{isCurrentFav ? 'Saved' : 'Save'}</span>
@@ -365,7 +393,7 @@ function WeatherDashboard() {
                     variant="secondary"
                     size="sm"
                     onClick={() => refetchWeather()}
-                    className="mt-4 gap-1.5 text-xs"
+                    className="mt-4 min-h-11 min-w-11 px-4 gap-1.5 text-xs"
                   >
                     <RotateCcw className="h-3 w-3" />
                     <span>{formattedError.action}</span>

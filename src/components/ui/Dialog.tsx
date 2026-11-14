@@ -50,11 +50,11 @@ const DialogContent = forwardRef<
       >
         <motion.div
           className={cn(
-            'relative w-full max-w-[480px]',
+            'relative w-full max-w-[480px] max-w-[calc(100vw-2rem)]',
             'rounded-xl border border-[var(--color-border)]',
             'bg-[var(--color-surface)] text-[var(--color-text-primary)]',
             'shadow-sm',
-            'p-6',
+            'p-5 sm:p-6',
             'focus:outline-none',
             className,
           )}
@@ -66,7 +66,10 @@ const DialogContent = forwardRef<
         >
           {children}
           {showClose && (
-            <DialogPrimitive.Close className="absolute right-4 top-4 rounded-md p-1 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40">
+            <DialogPrimitive.Close
+              className="absolute right-2 top-2 sm:right-3 sm:top-3 min-h-11 min-w-11 flex items-center justify-center rounded-md text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-surface-secondary)] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
+              aria-label="Close dialog"
+            >
               <X className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">Close</span>
             </DialogPrimitive.Close>

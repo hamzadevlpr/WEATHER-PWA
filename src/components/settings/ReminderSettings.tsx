@@ -121,7 +121,7 @@ export function ReminderSettingsComponent({
 
       {/* Permission: Not granted hint */}
       {permissionState === 'default' && (
-        <div className="flex items-center justify-between gap-2 pt-2 text-xs text-[var(--color-text-secondary)]">
+        <div className="flex items-center justify-between gap-3 pt-2 text-xs text-[var(--color-text-secondary)]">
           <div className="flex items-center gap-2">
             <Info className="h-4 w-4 shrink-0 text-primary-500" />
             <p>Notification permission required for daily weather alerts.</p>
@@ -130,7 +130,7 @@ export function ReminderSettingsComponent({
             variant="secondary"
             size="sm"
             onClick={() => setShowExplainer(true)}
-            className="h-6 text-[11px] shrink-0"
+            className="min-h-11 min-w-11 sm:min-h-7 sm:h-7 px-3 text-xs shrink-0"
           >
             Allow
           </Button>
@@ -159,7 +159,7 @@ export function ReminderSettingsComponent({
       {/* Settings section when enabled */}
       {settings.enabled && canUseReminders && (
         <div className="space-y-4 pt-2 border-t border-[var(--color-border)]">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <label htmlFor="reminder-time" className="text-xs font-medium text-[var(--color-text-secondary)]">
               Delivery time
             </label>
@@ -168,21 +168,21 @@ export function ReminderSettingsComponent({
               type="time"
               value={settings.time}
               onChange={(e) => onUpdate({ time: e.target.value })}
-              className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-2.5 py-1 text-xs text-[var(--color-text-primary)] focus:border-sky-500 focus:outline-none"
+              className="min-h-11 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 text-base sm:text-xs text-[var(--color-text-primary)] focus:border-sky-500 focus:outline-none"
             />
           </div>
 
-          <div className="flex items-center justify-between pt-1">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1">
             <span className="text-xs text-[var(--color-text-tertiary)]">Preview notification</span>
             <Button
               variant="secondary"
               size="sm"
               loading={testSending}
               onClick={handleSendTest}
-              className="text-xs h-8"
+              className="min-h-11 min-w-11 px-3 text-xs"
             >
-              <Send className="mr-1.5 h-3 w-3" />
-              Send test notification
+              <Send className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+              <span>Send test notification</span>
             </Button>
           </div>
 
@@ -209,9 +209,9 @@ export function ReminderSettingsComponent({
             <button
               type="button"
               onClick={() => setShowTroubleshooting((prev) => !prev)}
-              className="flex items-center gap-1 text-[11px] text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors"
+              className="min-h-11 flex items-center gap-1.5 text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors py-2"
             >
-              <HelpCircle className="h-3 w-3" />
+              <HelpCircle className="h-3.5 w-3.5 shrink-0" />
               <span>Notification not appearing? Troubleshooting tips</span>
             </button>
 

@@ -73,7 +73,7 @@ export function FavouritesPanel({
       </div>
 
       {favourites.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-6 text-center">
+        <div className="flex flex-col items-center justify-center py-5 text-center">
           <div className="mb-2 flex h-9 w-9 items-center justify-center rounded-full bg-[var(--color-surface-secondary)] text-[var(--color-text-tertiary)]">
             <Sparkles className="h-4 w-4" />
           </div>
@@ -83,15 +83,16 @@ export function FavouritesPanel({
           </p>
         </div>
       ) : (
-        <div className="flex flex-row md:flex-col gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+        <div className="flex flex-row md:flex-col gap-2 overflow-x-auto pb-1.5 md:pb-0 overscroll-x-contain scrollbar-thin max-w-full">
           {favourites.map((fav, index) => (
-            <FavouriteItemWithWeather
-              key={fav.id || `${fav.name}-${fav.latitude}-${fav.longitude}-${index}`}
-              city={fav}
-              isSelected={selectedCityId === fav.id}
-              onClick={() => onSelect(fav)}
-              onRemoveRequest={() => setCityToRemove(fav)}
-            />
+            <div key={fav.id || `${fav.name}-${fav.latitude}-${fav.longitude}-${index}`} className="shrink-0 min-w-[180px] md:min-w-0 md:w-full">
+              <FavouriteItemWithWeather
+                city={fav}
+                isSelected={selectedCityId === fav.id}
+                onClick={() => onSelect(fav)}
+                onRemoveRequest={() => setCityToRemove(fav)}
+              />
+            </div>
           ))}
         </div>
       )}

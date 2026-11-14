@@ -19,10 +19,10 @@ export function OfflineBanner({ isOnline, lastCityName, lastUpdated }: OfflineBa
           transition={{ duration: 0.2 }}
           className="bg-amber-500/15 border-b border-amber-500/30 text-amber-800 dark:text-amber-200 px-4 py-2 text-xs font-medium"
         >
-          <div className="mx-auto flex max-w-5xl items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
+          <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 overflow-hidden">
+            <div className="flex items-center gap-2 min-w-0 flex-1">
               <WifiOff className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
-              <span>
+              <span className="truncate sm:text-wrap">
                 You're offline.{' '}
                 {lastCityName ? (
                   <>
@@ -34,7 +34,7 @@ export function OfflineBanner({ isOnline, lastCityName, lastUpdated }: OfflineBa
                 )}
               </span>
             </div>
-            <span className="hidden sm:inline text-[11px] opacity-80">
+            <span className="hidden sm:inline shrink-0 text-[11px] opacity-80">
               Search disabled until reconnected
             </span>
           </div>

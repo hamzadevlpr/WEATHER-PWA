@@ -15,9 +15,9 @@ const variantStyles = {
 } as const;
 
 const sizeStyles = {
-  sm: 'h-8 px-3 text-sm gap-1.5 rounded-md',
-  md: 'h-10 px-4 text-sm gap-2 rounded-lg',
-  lg: 'h-12 px-6 text-base gap-2.5 rounded-lg',
+  sm: 'min-h-11 min-w-11 sm:min-h-8 sm:min-w-0 sm:h-8 px-3 text-sm gap-1.5 rounded-md',
+  md: 'min-h-11 min-w-11 sm:min-h-10 sm:min-w-0 sm:h-10 px-4 text-sm gap-2 rounded-lg',
+  lg: 'min-h-12 min-w-12 sm:min-h-12 sm:min-w-0 sm:h-12 px-6 text-base gap-2.5 rounded-lg',
 } as const;
 
 export interface ButtonProps
@@ -50,7 +50,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={cn(
           'inline-flex items-center justify-center font-medium whitespace-nowrap',
-          'min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0',
+          'min-h-11 min-w-11 sm:min-h-0 sm:min-w-0',
           'transition-colors duration-150 ease-in-out',
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
           'disabled:pointer-events-none disabled:opacity-50',

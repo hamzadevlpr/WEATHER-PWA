@@ -28,10 +28,10 @@ export const ConfirmRemoveDialog: React.FC<ConfirmRemoveDialogProps> = ({
           Remove {cityName} from favourites? You can always add it back later.
         </DialogDescription>
         <div className="mt-6 flex items-center justify-end gap-3">
-          <Button variant="secondary" onClick={onCancel} type="button">
+          <Button variant="secondary" onClick={onCancel} type="button" className="min-h-11 min-w-11 px-4">
             Cancel
           </Button>
-          <Button variant="danger" onClick={onConfirm} type="button">
+          <Button variant="danger" onClick={onConfirm} type="button" className="min-h-11 min-w-11 px-4">
             Remove
           </Button>
         </div>

@@ -49,7 +49,7 @@ export const SuggestionList = forwardRef<HTMLUListElement, SuggestionListProps>(
                 role="option"
                 aria-selected={isActive}
                 className={cn(
-                  'flex min-h-[44px] cursor-pointer select-none items-center gap-2 px-3 py-2',
+                  'flex min-h-11 min-w-full cursor-pointer select-none items-center gap-2 px-3 py-2.5',
                   'transition-colors',
                   isActive
                     ? 'bg-[var(--color-surface-tertiary)] text-[var(--color-text-primary)]'

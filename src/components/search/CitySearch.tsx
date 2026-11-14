@@ -186,8 +186,8 @@ export function CitySearch({
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           className={cn(
-            'w-full rounded-lg border bg-[var(--color-surface)] py-2.5 pl-10 pr-10',
-            'text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)]',
+            'w-full min-h-11 rounded-lg border bg-[var(--color-surface)] py-2.5 pl-10 pr-12',
+            'text-base sm:text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)]',
             'transition-colors',
             'focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20',
             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -207,9 +207,9 @@ export function CitySearch({
               inputRef.current?.focus();
             }}
             className={cn(
-              'absolute inset-y-0 right-2 flex items-center px-1',
+              'absolute inset-y-0 right-0 min-h-11 min-w-11 flex items-center justify-center',
               'text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg',
             )}
             aria-label="Clear search"
           >
@@ -224,8 +224,9 @@ export function CitySearch({
             onClick={onUseCurrentLocation}
             disabled={isLocating}
             className={cn(
-              'absolute inset-y-0 right-2.5 flex items-center px-1 text-[var(--color-text-tertiary)]',
-              'hover:text-sky-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded transition-colors',
+              'absolute inset-y-0 right-0 min-h-11 min-w-11 flex items-center justify-center',
+              'text-[var(--color-text-tertiary)] hover:text-sky-500',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg transition-colors',
             )}
             title="Use current location"
             aria-label="Use current location"
@@ -254,9 +255,9 @@ export function CitySearch({
       {expanded && (
         <div
           className={cn(
-            'absolute z-50 mt-1 w-full overflow-hidden rounded-lg border',
+            'absolute z-50 mt-1 w-full max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border',
             'border-[var(--color-border)] bg-[var(--color-surface)]',
-            'shadow-sm',
+            'shadow-lg',
           )}
         >
           {/* Quick option: Use device location */}
@@ -269,12 +270,12 @@ export function CitySearch({
                 setIsOpen(false);
               }}
               disabled={isLocating}
-              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-xs font-medium text-sky-600 dark:text-sky-400 hover:bg-[var(--color-surface-secondary)] border-b border-[var(--color-border)] transition-colors text-left"
+              className="flex w-full min-h-11 items-center gap-2.5 px-3 py-2.5 text-xs font-medium text-sky-600 dark:text-sky-400 hover:bg-[var(--color-surface-secondary)] border-b border-[var(--color-border)] transition-colors text-left"
             >
               {isLocating ? (
-                <Loader2 size={14} className="animate-spin text-sky-500 shrink-0" />
+                <Loader2 size={16} className="animate-spin text-sky-500 shrink-0" />
               ) : (
-                <Navigation size={14} className="shrink-0" />
+                <Navigation size={16} className="shrink-0" />
               )}
               <span>{isLocating ? 'Locating your device…' : 'Use current device location'}</span>
             </button>
@@ -294,7 +295,7 @@ export function CitySearch({
                     e.preventDefault();
                     clearRecentSearches();
                   }}
-                  className="text-xs text-primary-500 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-1"
+                  className="min-h-11 min-w-11 inline-flex items-center justify-center text-xs font-medium text-primary-500 hover:text-primary-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded px-2"
                 >
                   Clear
                 </button>
@@ -355,7 +356,7 @@ export function CitySearch({
                     retry();
                   }}
                   className={cn(
-                    'mt-1 rounded-md px-3 py-1.5 text-sm font-medium',
+                    'mt-2 min-h-11 min-w-11 inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium',
                     'bg-primary-500 text-white hover:bg-primary-600',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500',
                     'transition-colors',

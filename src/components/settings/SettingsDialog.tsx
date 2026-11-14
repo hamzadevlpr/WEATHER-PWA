@@ -53,23 +53,23 @@ export function SettingsDialog({
 
         <div className="mt-6 space-y-6">
           {/* Theme */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <div>
               <p className="text-sm font-medium text-[var(--color-text-primary)]">Theme</p>
               <p className="text-xs text-[var(--color-text-tertiary)]">Select interface color scheme</p>
             </div>
-            <ThemeToggle theme={theme} onChange={onThemeChange} />
+            <ThemeToggle theme={theme} onChange={onThemeChange} className="w-full sm:w-auto justify-center" />
           </div>
 
           <div className="border-t border-[var(--color-border)]" />
 
           {/* Unit */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
             <div>
               <p className="text-sm font-medium text-[var(--color-text-primary)]">Temperature Units</p>
               <p className="text-xs text-[var(--color-text-tertiary)]">Convert all temperatures & wind speed</p>
             </div>
-            <UnitToggle unit={unit} onChange={onUnitChange} />
+            <UnitToggle unit={unit} onChange={onUnitChange} className="w-full sm:w-auto justify-center" />
           </div>
 
           <div className="border-t border-[var(--color-border)]" />

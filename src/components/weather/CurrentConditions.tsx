@@ -32,10 +32,10 @@ export function CurrentConditions({
       className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-sm"
     >
       {/* Main temperature + icon */}
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-baseline gap-3">
-            <p className="tabular-nums text-6xl font-light tracking-tight text-[var(--color-text-primary)]">
+      <div className="flex items-start justify-between gap-4">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-baseline gap-3">
+            <p className="tabular-nums text-5xl sm:text-6xl font-light tracking-tight text-[var(--color-text-primary)]">
               {formatTemperature(current.temperature, unit)}
             </p>
             <div className="space-y-0.5 text-xs text-[var(--color-text-secondary)]">
@@ -58,21 +58,24 @@ export function CurrentConditions({
               </p>
             </div>
           </div>
-          <p className="mt-2 text-base font-medium text-[var(--color-text-primary)]">
+          <p className="mt-2 text-base font-medium text-[var(--color-text-primary)] truncate">
             {current.conditionText}
           </p>
         </div>
-        <WeatherIcon
-          condition={current.condition}
-          isDay={current.isDay}
-          size={64}
-        />
+        <div className="shrink-0">
+          <WeatherIcon
+            condition={current.condition}
+            isDay={current.isDay}
+            size={64}
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
       {/* Atmospheric stats + Time & Refresh */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-y-3 pt-4 border-t border-[var(--color-border)] text-sm text-[var(--color-text-secondary)]">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-y-3 gap-x-2 pt-4 border-t border-[var(--color-border)] text-sm text-[var(--color-text-secondary)]">
         {/* Humidity + Wind closely grouped */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4">
           <span className="inline-flex items-center gap-1.5">
             <Droplets size={16} aria-hidden="true" />
             <span>{current.humidity}%</span>
@@ -84,7 +87,7 @@ export function CurrentConditions({
               {compass ? ` ${compass}` : ''}
             </span>
           </span>
-          <span>
+          <span className="text-xs sm:text-sm">
             {formatLocalTime(current.timezoneOffset)}
           </span>
         </div>
@@ -99,13 +102,13 @@ export function CurrentConditions({
               type="button"
               onClick={onRefresh}
               className={cn(
-                'rounded-md p-1 transition-colors',
+                'min-h-11 min-w-11 -mr-2 flex items-center justify-center rounded-lg transition-colors',
                 'hover:bg-[var(--color-surface-tertiary)] hover:text-[var(--color-text-secondary)]',
                 'focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:outline-none',
               )}
               aria-label="Refresh weather data"
             >
-              <RefreshCw size={14} aria-hidden="true" className={cn(isRefreshing && 'animate-spin')} />
+              <RefreshCw size={16} aria-hidden="true" className={cn(isRefreshing && 'animate-spin')} />
             </button>
           )}
         </div>

@@ -83,8 +83,8 @@ function ToastItem({
       <button
         type="button"
         onClick={() => onDismiss(t.id)}
-        className="shrink-0 rounded-md p-0.5 opacity-60 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
-        aria-label="Dismiss"
+        className="shrink-0 -mr-2 -mt-2 min-h-11 min-w-11 flex items-center justify-center rounded-md opacity-60 hover:opacity-100 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500/40"
+        aria-label="Dismiss notification"
       >
         <X className="h-4 w-4" />
       </button>
@@ -130,7 +130,7 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
       <div
         aria-live="polite"
         aria-label="Notifications"
-        className="pointer-events-none fixed bottom-4 right-4 z-[100] flex flex-col-reverse gap-2"
+        className="pointer-events-none fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 left-4 sm:left-auto z-[100] flex flex-col-reverse gap-2 max-w-[calc(100vw-2rem)] sm:max-w-sm"
       >
         <AnimatePresence mode="popLayout">
           {toasts.map((t) => (

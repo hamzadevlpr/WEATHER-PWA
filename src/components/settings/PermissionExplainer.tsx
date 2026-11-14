@@ -44,11 +44,11 @@ export function PermissionExplainer({ open, onOpenChange, onAllow }: PermissionE
           <p>• You can turn this off at any time</p>
         </div>
 
-        <div className="mt-6 flex justify-end gap-2">
-          <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)}>
+        <div className="mt-6 flex flex-wrap justify-end gap-3">
+          <Button variant="ghost" size="sm" onClick={() => onOpenChange(false)} className="min-h-11 min-w-11 px-4">
             Not now
           </Button>
-          <Button variant="primary" size="sm" loading={loading} onClick={handleConfirm}>
+          <Button variant="primary" size="sm" loading={loading} onClick={handleConfirm} className="min-h-11 min-w-11 px-4">
             Enable reminders
           </Button>
         </div>
